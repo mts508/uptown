@@ -1,0 +1,113 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<style>
+		body {
+			background-color: black;
+		}
+		i {
+			font-size: 36px!important;
+		}
+		button {
+			margin: 8px 2px;
+			background-color: black;
+			color: white;
+			border: 2px solid white;
+			border-radius: 4px;
+		}
+		div.pasos div {
+			flex-basis: calc(25% - 7px);
+			background-color: white;
+			border: 2px solid gray;
+			margin: 1px;
+			border-radius: 10px;
+		}
+		img {
+			width: 100%;
+			border-radius: 10px;
+		}
+	</style>
+</head>
+<body>
+	<audio id="song">
+  	<source src="UptownFunk.mp3" type="audio/mp3">
+	</audio>
+	<div style="background-color: #333; display: flex; justify-content: center;">
+		<button onclick="reset_song()"><i class="material-icons">skip_previous</i></button>
+		<button onclick="play_pause()"><i class="material-icons">pause_circle_outline</i></button>
+		<button onclick="change_speed()"><i class="material-icons">music_video</i></button>
+	</div>
+
+	<br>
+
+	<div style="display: flex; flex-wrap: wrap;" class="pasos" id="pasos">
+		<div time="0" onclick="setSongTime(this);"><img src="paso1.gif"></div>
+		<div time="8" onclick="setSongTime(this);"><img src="paso2.gif"></div>
+		<div time="16.5" onclick="setSongTime(this);"><img src="paso3.gif"></span></div>
+		<div time="24" onclick="setSongTime(this);"><span>pasos adelante levantando brazos" </span></div>
+		<div time="28" onclick="setSongTime(this);"><span>extender brazos y cruzar pies" </span></div>
+		<div time="32" onclick="setSongTime(this);"><span>deslize hacia atras"</span></div>
+		<div time="37" onclick="setSongTime(this);"><span>deslize al costado"</span></div>
+		<div time="41" onclick="setSongTime(this);"><span>deslize al frente"</span></div>
+		<div time="45" onclick="setSongTime(this);"><span>180 y mover brazos levantados" </span></div>
+		<div time="50" onclick="setSongTime(this);"><span>levantar brazos 'hallelujah'" </span></div>
+		<div time="56" onclick="setSongTime(this);"><span>4 movimientos de brazo y giros 'cause upwotn funk wont give it to you'" </span></div>
+		<div time="64.5" onclick="setSongTime(this);"><span>'dont believe me just watch'"</span></div>
+	</div>
+	<span id="tiempo" style="color: white;"></span>
+
+
+	<script>
+		var song = document.getElementById("song");
+		
+		var tiempo = document.getElementById("tiempo");
+
+		song.loop = true;
+		song.ontimeupdate = function() {
+			var pasos = document.getElementById("pasos").children;
+			closest = 0;
+			tiempo.textContent = song.currentTime;
+			for(i=0; i<pasos.length; i++) {
+				elementTime = Number(pasos[i].getAttribute("time"));
+				if(elementTime >= song.currentTime) {	
+					//undone
+					pasos[i].style.borderColor = "gray";
+				} else {
+					//done
+					closest = i;
+					pasos[i].style.borderColor = "blue";
+				}
+			}
+			pasos[closest].style.borderColor = "cyan";
+		}
+
+		function setSongTime(el) {
+			song.currentTime = Number(el.getAttribute('time'));
+			song.play();
+		}
+
+		function play_pause() {
+			if(song.paused) {
+				song.play()
+			} else {
+				song.pause()
+			}
+		}
+
+		function reset_song() {
+			song.currentTime = 0;
+			song.play();
+		}
+
+		function change_speed() {
+			if(song.playbackRate == 0.5) {
+				song.playbackRate = 1.0;
+			} else {
+				song.playbackRate = 0.5;
+			}
+		}
+	</script>
+
+</body>
+</html>
